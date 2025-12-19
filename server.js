@@ -41,7 +41,6 @@ const UserSchema = new mongoose.Schema({
   },
 });
 // Đảm bảo tạo unique index cho email
-UserSchema.index({ email: 1 }, { unique: true });
 const User = mongoose.model("User", UserSchema);
 app.get("/api/users", async (req, res) => {
   try {
