@@ -1,3 +1,4 @@
+require("dotenv").config({ quiet: true });
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -7,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 // Kết nối MongoDB với username là MSSV, password là MSSV, dbname là it4409
 mongoose
-  .connect("mongodb+srv://20225078:20225078@lec8-cnw.3uvj7yu.mongodb.net/it4409?appName=Lec8-CNW")
+  .connect(process.env.MONGO_URI)
   .then(async () => {
     console.log("Connected to MongoDB");
     // Đảm bảo index được tạo
@@ -41,7 +42,6 @@ const UserSchema = new mongoose.Schema({
   },
 });
 // Đảm bảo tạo unique index cho email
-UserSchema.index({ email: 1 }, { unique: true });
 const User = mongoose.model("User", UserSchema);
 app.get("/api/users", async (req, res) => {
   try {
@@ -176,6 +176,7 @@ app.delete("/api/users/:id", async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
-app.listen(3001, () => {
-  console.log("Server running on http://localhost:3001");
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
